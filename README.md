@@ -7,7 +7,7 @@ Conjunto de trabalhos desenvolvidos para a matéria de Sistemas Distribuídos
 
 Instale com o pip:
 ```shell script
-pip install -U --user git+https://github.com/HeavenVolkoff/sistemas_distribuidos.git
+pip install -U --user sistemas_distribuidos@git+https://github.com/HeavenVolkoff/sistemas_distribuidos.git
 ```
 
 Os seguintes programas estarão disponíveis:
