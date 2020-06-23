@@ -1,3 +1,6 @@
+# Standard
+import typing as T
+
 # External
 import click
 
@@ -6,15 +9,22 @@ from ..base import connect
 
 
 @click.command()
-@click.argument("host", type=str)
-@click.argument("port", type=int)
-def client(host: str, port: int) -> None:
-    """Hello client.
-
-    HOST is the address for the host serving the hello server.
-    PORT is the port where the hello server is available in the remote host.
-
-    """
+@click.option(
+    "--host",
+    "-h",
+    type=str,
+    default="localhost",
+    help="Address for the host serving the hello server.",
+)
+@click.option(
+    "--port",
+    "-p",
+    type=int,
+    default=5678,
+    help="Port where the hello server is available in the remote host.",
+)
+def client(host: str = "localhost", port: int = 5678) -> T.NoReturn:
+    """Hello client."""
     connection = connect(host, port)
 
     try:
@@ -22,6 +32,8 @@ def client(host: str, port: int) -> None:
         print(connection.send("hello"))
     except StopIteration:
         pass
+
+    exit(0)
 
 
 if __name__ == "__main__":

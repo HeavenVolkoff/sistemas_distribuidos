@@ -1,4 +1,5 @@
 # isort:skip_file
+import importlib
 
 from rich.traceback import install
 
@@ -19,15 +20,33 @@ def main() -> T.NoReturn:
     from os import path
     import sys
 
-    # External
-    from sistemas_distribuidos import hello
-    from sistemas_distribuidos import calculator
-
-    programs = {
-        "hello_server": hello.server,
-        "hello_client": hello.client,
-        "remote_calculator_server": calculator.server,
-        "remote_calculator_client": calculator.client,
+    programs: T.Dict[str, T.Callable[[], T.NoReturn]] = {
+        "hello_server": (
+            lambda: getattr(importlib.import_module("sistemas_distribuidos.hello"), "server")()
+        ),
+        "hello_client": (
+            lambda: getattr(importlib.import_module("sistemas_distribuidos.hello"), "client")()
+        ),
+        "word_counter_server": (
+            lambda: getattr(
+                importlib.import_module("sistemas_distribuidos.word_counter"), "server"
+            )()
+        ),
+        "word_counter_client": (
+            lambda: getattr(
+                importlib.import_module("sistemas_distribuidos.word_counter"), "client"
+            )()
+        ),
+        "remote_calculator_server": (
+            lambda: getattr(
+                importlib.import_module("sistemas_distribuidos.calculator"), "server"
+            )()
+        ),
+        "remote_calculator_client": (
+            lambda: getattr(
+                importlib.import_module("sistemas_distribuidos.calculator"), "client"
+            )()
+        ),
     }
 
     program_name = path.basename(sys.argv[0])

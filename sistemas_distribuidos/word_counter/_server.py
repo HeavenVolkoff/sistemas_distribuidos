@@ -1,12 +1,20 @@
 # Standard
+from collections import Counter
+import re
+import string
 import typing as T
 
 # External
 import click
 
 # Project
-from . import exposed
 from .. import rpc
+
+punctuation_map = dict.fromkeys(ord(c) for c in string.punctuation)
+
+
+def count_words(content: str) -> T.Sequence[T.Tuple[str, int]]:
+    return Counter(str(content).translate(punctuation_map).split()).most_common()
 
 
 @click.command()
@@ -26,7 +34,7 @@ from .. import rpc
 )
 def server(host: str = "localhost", port: int = 5678) -> T.NoReturn:
     """Remote calculator server."""
-    rpc.server(host, port, {name: func for name, func in vars(exposed).items() if callable(func)})
+    rpc.server(host, port, {"count_words": count_words})
     exit(0)
 
 
